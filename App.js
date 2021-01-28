@@ -1,50 +1,27 @@
 import * as React from 'react';
-import { Button, View, Text, StyleSheet } from 'react-native';
+import { Button, View, Text } from 'react-native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import Nav from './Routes/Nav';
-import About from './Routes/About'
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import friendsReducer from './components/FriendsReducer';
+import HomeScreen from './Routes/HomeScreen';
+import Nav from './Routes/Nav'
+import FriendsScreen from './Routes/FriendsScreen'
 
-function HomeScreen({ navigation }) {
+const Drawer = createDrawerNavigator();
+const store = createStore(friendsReducer);
+
+export default function App() {
+  var piska = "piska"
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Home Screen</Text>
-      <View style={classes.container}>
-        <Button
-          title="Go to today's weather forecast"
-          onPress={() => navigation.navigate('Today')}
-        />
-      </View>
-      <View style={classes.container}>
-        <Button
-          title="Go to 5 days weather forecast"
-          onPress={() => navigation.navigate('5 Days')}
-        />
-      </View>
-    </View>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Drawer.Navigator initialRouteName="Home">
+          <Drawer.Screen name="Home" component={HomeScreen} />
+          <Drawer.Screen name="7 day weather" component={Nav} />
+        </Drawer.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }
-
-
-const Stack = createStackNavigator();
-
-function App() {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Today" component={Nav} />
-        <Stack.Screen name="5 Days" component={About} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-}
-
-const classes = StyleSheet.create({
-  container: {
-    width: 260,
-    marginTop: 8,
-  },
-});
-
-export default App;

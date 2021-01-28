@@ -7,6 +7,7 @@ import { bindActionCreators } from 'redux';
 import { addData } from '../components/FriendsActions';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
+import { IconButton, Colors } from 'react-native-paper';
 import city from '../components/saved'
 
 class HomeScreen extends React.Component {
@@ -75,39 +76,19 @@ class HomeScreen extends React.Component {
 
   render() {
       return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#5d6080'}}>
-        <Image style={{opacity: 0.6,position: 'absolute', width:'100%', height:'100%', resizeMode: 'stretch',}} source={require('../components/bg.jpg')} />
-
-        <View>
-          <View style={classes.containerInput}>
-            <TextInput onChangeText={(val) => this.handleChange(val)} style={classes.input} placeholder='Enter city'/>
-              <View style={classes.buttonContainer}>
-                <Button onPress={() => this.weather()} title='proceed'/>
-              </View>
-          </View>
-        </View>
-          <Text>{this.state.city}</Text>
-          <View style={classes.nonOppa}>
-            {
-              this.state.data.map((item, index) => (
-                <View key={index}style={classes.textItem}>
-                  <View style={classes.datItem}>
-                    <Text style={{color: "#fff",}}>{this.getDate(this.state.day)[index]}</Text>
-                  </View>
-
-                  <View>
-                  </View>
-                  <Text style={{color: "#fff",}}>{item['temperature']}</Text>
-                  <Text style={{color: "#fff",}}>{item['feels_like']}</Text>
-                  <Text style={{color: "#fff",}}>{item['description']} <Image source={{ uri: 'http://openweathermap.org/img/wn/' + this.state.data[0].icon + '@2x.png' }} style={{ width: 32, height: 16 }} /></Text>
+      <View style={classes.container}>
+        <View style={classes.nonOppa}>
+          {
+            this.state.data.map((item, index) => (
+              <View key={index}style={classes.textItem}>
+                <View>
                 </View>
+                <Text style={{color: "#fff",}}>{this.getDate(this.state.day)[index]}: {this.props.data[index].temperature}</Text>
+              </View>
 
-              ))
-            }
-          </View>
-        <View style={classes.opaqueCont}>
+            ))
+          }
         </View>
-
       </View>
     );
   }
@@ -129,59 +110,34 @@ const mapDispatchToProps = dispatch => (
 
 
 const classes = StyleSheet.create({
-  input: {
-    flex: 5,
-    height: 40,
-    backgroundColor: '#e0e0e0',
-    borderWidth: 2,
-    padding: 4,
-    borderColor: '#2b2fff',
-    width: 356,
-  },
-  buttonContainer: {
-    height: 40,
-    marginLeft: 15,
-  },
-  containerInput: {
-    width: 356,
-    marginTop: 24,
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
   container: {
-    width: 260,
-    marginTop: 8,
-    opacity: 0.8,
+    top: -280,
+    left: -200,
+    width: 400,
+    height: 300,
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#5d6080',
+  },
+  nonOppa: {
+    display: 'none',
+    justifyContent: 'center',
+    position: "absolute",
+    width: 400,
+    height: 300,
   },
   textItem: {
     borderColor: '#ffb5f6',
     borderWidth: 2,
     borderRadius: 6,
     margin: 8,
-    padding: 8,
   },
   datItem: {
     borderColor: '#ffb5f6',
     alignItems: 'center',
     borderWidth: 2,
     borderRadius: 6,
-  },
-  nonOppa: {
-    top: 25,
-    justifyContent: 'center',
-    position: "absolute",
-    margin: 120,
-    width: 500,
-    height: 850,
-  },
-  opaqueCont: {
-    opacity: 0.1,
-    backgroundColor: '#e3e3e3',
-    margin: 30,
-    width: 500,
-    height: 900,
-    alignItems: 'center',
-    borderRadius: 25,
   },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);
